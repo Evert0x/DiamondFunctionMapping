@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 
 library PoolStorage {
     struct Base {
-        address token;
+        bool initialized;
         mapping(address => uint256) stakes;
     }
 

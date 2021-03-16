@@ -7,20 +7,25 @@ import "./LibPoolStorage.sol";
 
 contract Pool {
     function stake(uint256 _amount) external {
-        PoolStorage.Base storage d = baseData();
+        (, PoolStorage.Base storage d) = baseData();
 
         d.stakes[msg.sender] += _amount;
     }
 
     function getStake(address _user) external view returns (uint256) {
-        PoolStorage.Base storage d = baseData();
+        (, PoolStorage.Base storage d) = baseData();
 
         return d.stakes[msg.sender];
     }
 
-    function baseData() internal view returns (PoolStorage.Base storage s) {
-        s = PoolStorage.poolStorage(bps());
-        require(s.token != address(0), "INVALID_TOKEN");
+    function baseData()
+        internal
+        view
+        returns (address token, PoolStorage.Base storage s)
+    {
+        address token = bps();
+        s = PoolStorage.poolStorage(token);
+        require(s.initialized, "INVALID_TOKEN");
     }
 
     function bps() internal pure returns (address rt) {

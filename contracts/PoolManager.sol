@@ -7,6 +7,6 @@ import "./LibPoolStorage.sol";
 
 contract PoolManager {
     function addToken(address _token) external {
-        PoolStorage.poolStorage(_token).token = _token;
+        PoolStorage.poolStorage(_token).initialized = true;
     }
 }

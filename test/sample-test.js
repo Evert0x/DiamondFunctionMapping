@@ -21,7 +21,7 @@ describe("Greeter", function () {
   let solution;
 
   const token1Address = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
-  const token2Address = "0x6b175474e89094c44da98b954eedeac495271d0f";
+  const token2Address = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
 
   before(async function () {
     [owner, alice, bob, charlie] = await ethers.getSigners();
@@ -72,13 +72,17 @@ describe("Greeter", function () {
     await solution.addToken(token2Address);
   });
   it("Valid token 1", async function () {
-    solution.stake(parseEther("100"), token1Address);
+    tx = await solution.stake(parseEther("100"), token1Address);
+    tx = await tx.wait();
+    expect(tx.events[0].args._token).to.eq(token1Address);
     expect(
       await solution.getStake(await owner.getAddress(), token1Address)
     ).to.eq(parseEther("100"));
   });
   it("Valid token 2", async function () {
-    solution.stake(parseEther("500"), token2Address);
+    tx = await solution.stake(parseEther("500"), token2Address);
+    tx = await tx.wait();
+    expect(tx.events[0].args._token).to.eq(token2Address);
     expect(
       await solution.getStake(await owner.getAddress(), token2Address)
     ).to.eq(parseEther("500"));

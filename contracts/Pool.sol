@@ -6,9 +6,12 @@ import "hardhat/console.sol";
 import "./LibPoolStorage.sol";
 
 contract Pool {
-    function stake(uint256 _amount) external {
-        (, PoolStorage.Base storage d) = baseData();
+    event Deposit(address _token, uint256 _amount);
 
+    function stake(uint256 _amount) external {
+        (address token, PoolStorage.Base storage d) = baseData();
+
+        emit Deposit(token, _amount);
         d.stakes[msg.sender] += _amount;
     }
 
@@ -23,7 +26,7 @@ contract Pool {
         view
         returns (address token, PoolStorage.Base storage s)
     {
-        address token = bps();
+        token = bps();
         s = PoolStorage.poolStorage(token);
         require(s.initialized, "INVALID_TOKEN");
     }

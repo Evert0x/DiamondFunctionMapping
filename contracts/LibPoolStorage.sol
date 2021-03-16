@@ -10,8 +10,9 @@ library PoolStorage {
     }
 
     function poolStorage(address _token) internal pure returns (Base storage bs) {
+        bytes32 position = keccak256(abi.encode("diamond.token.", _token));
         assembly {
-            bs.slot := _token
+            bs.slot := position
         }
     }
 }
